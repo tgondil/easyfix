@@ -115,7 +115,7 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
       <div className="max-w-7xl mx-auto p-8">
         {/* Header Section */}
-        <div className="mb-16 text-center space-y-4">
+        <div className="mb-16 text-center space-y-4 pt-8">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 blur-xl opacity-20"></div>
             <h1 className="relative text-7xl font-bold tracking-tight">
@@ -221,9 +221,11 @@ export default function Home() {
 
           {/* Reports Section */}
           <div className="space-y-6">
+            <div className="flex justify-center items-center">
             <h2 className="text-2xl font-semibold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
               Active Reports
             </h2>
+            </div>
             <div className="space-y-4 max-h-[700px] overflow-y-auto pr-4 custom-scrollbar">
               {reports.length > 0 ? (
                 reports.map((report) => (
