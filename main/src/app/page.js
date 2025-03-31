@@ -9,7 +9,7 @@ const residenceHalls = [
   "Wiley Hall",
 ];
 
-// Generate numbers 1-20 for appliance numbers
+
 const applianceNumbers = Array.from({ length: 20 }, (_, i) => i + 1);
 
 export default function Home() {
@@ -68,7 +68,7 @@ export default function Home() {
   };
 
   const handleUpdate = async (reportId) => {
-    setIsSubmitting(true); // Optionally, you can set this for a loading state
+    setIsSubmitting(true);
 
     const updatedReportData = {
       _id: reportId,
@@ -77,7 +77,7 @@ export default function Home() {
       applianceNumber: editingReport.applianceNumber,
       residenceHall: editingReport.residenceHall,
       issue: editingReport.issue,
-      timestamp: editingReport.timestamp, // Keep the original timestamp or update if needed
+      timestamp: editingReport.timestamp,
     };
 
     const response = await fetch(`/api/reports`, {
@@ -93,9 +93,9 @@ export default function Home() {
       setReports((prevReports) =>
         prevReports.map((r) => (r._id === reportId ? updatedReport : r))
       );
-      setEditingReport(null); // Exit edit mode
+      setEditingReport(null);
     }
-    setIsSubmitting(false); // Reset loading state
+    setIsSubmitting(false);
   };
 
   const handleDelete = async (reportId) => {
