@@ -27,7 +27,11 @@ const ReportSchema = new mongoose.Schema({
   timestamp: {
     type: Date,
     default: Date.now,
+    index: true,
   },
 });
+
+ReportSchema.index({ appliance: 1, residenceHall: 1 });
+ReportSchema.index({ residenceHall: 1, timestamp: -1 });
 
 export default mongoose.models.Report || mongoose.model("Report", ReportSchema);
