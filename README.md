@@ -130,7 +130,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [MongoDB](https://www.mongodb.com/) - Database
 - [Tailwind CSS](https://tailwindcss.com/) - CSS Framework
 - [shadcn/ui](https://ui.shadcn.com/) - UI Components
-
-## 📞 Support
-
-For support, email support@easyfix.com or join our Slack channel.
