@@ -27,18 +27,33 @@ The following indexes have been implemented to optimize query performance:
      - Filtering reports by date range
      - Sorting reports by most recent first
      - Used in: Report generation interface
+   - Justification:
+     - The `getFilteredReportsPrepared()` function in `preparedStatements.js` uses date range filtering with `$gte` and `$lte` operators
+     - The main reports API (`/api/reports/route.js`) sorts reports by timestamp in descending order
+     - The UI (`page.js`) displays reports sorted by most recent first
+     - Date-based filtering is a primary feature in the report generation interface
 
 2. **Compound Index: Appliance and Residence Hall**
    - `{ appliance: 1, residenceHall: 1 }`
    - Supports:
      - Filtering reports by appliance type and residence hall
      - Used in: Report generation with multiple filters
+   - Justification:
+     - The `getFilteredReportsPrepared()` function frequently filters reports by both appliance type and residence hall
+     - The UI allows users to filter reports by both criteria simultaneously
+     - This compound index optimizes the common query pattern of finding reports for specific appliances in specific halls
+     - The index order (appliance first) is optimal since appliance has lower cardinality (only "washer" or "dryer")
 
 3. **Compound Index: Residence Hall and Timestamp**
    - `{ residenceHall: 1, timestamp: -1 }`
    - Supports:
      - Filtering reports by residence hall sorted by timestamp
      - Used in: Location-specific report generation
+   - Justification:
+     - The UI frequently displays reports grouped by residence hall
+     - Reports within each hall are typically shown in reverse chronological order
+     - This index optimizes the common pattern of "show me all reports for this hall, newest first"
+     - The descending timestamp order (-1) matches the UI's default sorting preference
 
 ## Database Access Methods
 

@@ -1,6 +1,5 @@
 import { MongoClient } from 'mongodb';
 
-// Connection function that returns a client
 async function getClient() {
   const uri = process.env.MONGODB_URI;
   const client = new MongoClient(uri);
@@ -8,7 +7,6 @@ async function getClient() {
   return client;
 }
 
-// Prepared statement to get reports by date range and filters
 export async function getFilteredReportsPrepared(startDate, endDate, appliance, residenceHall) {
   const client = await getClient();
   
@@ -16,10 +14,8 @@ export async function getFilteredReportsPrepared(startDate, endDate, appliance, 
     const db = client.db();
     const collection = db.collection('reports');
     
-    // Build query pipeline with prepared parameters
     const pipeline = [];
     
-    // Match stage with conditional filters
     const matchStage = {};
     
     if (startDate && endDate) {
@@ -45,13 +41,10 @@ export async function getFilteredReportsPrepared(startDate, endDate, appliance, 
       pipeline.push({ $match: matchStage });
     }
     
-    // Add sorting
     pipeline.push({ $sort: { timestamp: -1 } });
     
-    // Execute the prepared pipeline
     const reports = await collection.aggregate(pipeline).toArray();
     
-    // Calculate statistics
     const stats = await calculateStats(collection, matchStage);
     
     return { reports, stats };
@@ -60,7 +53,6 @@ export async function getFilteredReportsPrepared(startDate, endDate, appliance, 
   }
 }
 
-// Calculate statistics with a prepared aggregation
 async function calculateStats(collection, matchStage) {
   const pipeline = [
     { $match: matchStage },
@@ -97,7 +89,6 @@ async function calculateStats(collection, matchStage) {
     };
   }
   
-  // Calculate most reported appliance type
   const stats = result[0];
   const appliances = stats.applianceCounts;
   const applianceCounts = {};
@@ -116,7 +107,6 @@ async function calculateStats(collection, matchStage) {
     }
   }
   
-  // Calculate average reports per day
   const avgPerDay = stats.uniqueDatesCount > 0 
     ? (stats.totalReports / stats.uniqueDatesCount).toFixed(2) 
     : 0;
@@ -129,13 +119,11 @@ async function calculateStats(collection, matchStage) {
   };
 }
 
-// Transaction support for creating multiple reports at once
 export async function createReportsWithTransaction(reports) {
   const client = await getClient();
   const session = client.startSession();
   
   try {
-    // Start transaction with read committed isolation level
     session.startTransaction({
       readConcern: { level: 'local' },
       writeConcern: { w: 'majority' },
@@ -145,19 +133,16 @@ export async function createReportsWithTransaction(reports) {
     const db = client.db();
     const collection = db.collection('reports');
     
-    // Insert all reports within the transaction
     const insertPromises = reports.map(report => 
       collection.insertOne(report, { session })
     );
     
     const results = await Promise.all(insertPromises);
     
-    // Commit the transaction
     await session.commitTransaction();
     
     return results;
   } catch (error) {
-    // If an error occurred, abort the transaction
     await session.abortTransaction();
     throw error;
   } finally {
@@ -166,7 +151,6 @@ export async function createReportsWithTransaction(reports) {
   }
 }
 
-// Get residence halls for dynamic UI building
 export async function getResidenceHalls() {
   const client = await getClient();
   
