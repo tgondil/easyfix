@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   await dbConnect();
   try {
-    const reports = await Report.find({}).sort({ timestamp: -1 }); // Sort by newest first
+    const reports = await Report.find({}).sort({ timestamp: -1 });
     return NextResponse.json(reports);
   } catch (error) {
     return NextResponse.json({ error: "Error fetching reports" }, { status: 500 });

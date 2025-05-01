@@ -110,7 +110,6 @@ export default function Home() {
   };
 
   const generateReport = async () => {
-    // Use prepared statements API instead of client-side filtering
     try {
       const queryParams = new URLSearchParams();
       if (startDate) queryParams.append('startDate', startDate);
@@ -130,7 +129,6 @@ export default function Home() {
     }
   };
 
-  // Fetch residence halls dynamically from database
   useEffect(() => {
     const fetchHalls = async () => {
       try {
@@ -139,7 +137,6 @@ export default function Home() {
         
         if (data && Array.isArray(data)) {
           const hallNames = data.map(hall => hall.name);
-          // Only update if we got actual data and different from hardcoded
           if (hallNames.length > 0 && !arraysEqual(hallNames, residenceHalls)) {
             console.log("Using dynamically loaded residence halls");
           }
