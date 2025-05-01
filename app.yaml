@@ -1,0 +1,12 @@
+runtime: nodejs20
+
+handlers:
+  - url: /.*
+    script: auto
+    secure: always
+
+env_variables:
+  NODE_ENV: "production"
+  MONGODB_URI: "mongodb+srv://tgondil:nMIqVesPQqqDCHgA@cluster0.w1yxz.mongodb.net/myDatabase?retryWrites=true&w=majority"
+
+entrypoint: node .next/standalone/server.js 

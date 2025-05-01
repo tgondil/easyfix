@@ -3,7 +3,7 @@ import {
   getFilteredReportsPrepared, 
   createReportsWithTransaction,
   getResidenceHalls
-} from "@lib/preparedStatements";
+} from "@/lib/preparedStatements";
 
 // API route to get filtered reports using prepared statements
 export async function GET(req) {
