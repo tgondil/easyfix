@@ -14,4 +14,14 @@ steps:
     entrypoint: 'bash'
     args: ['-c', 'gcloud app deploy --quiet']
     
-timeout: '1600s' 
+timeout: '1600s'
+
+# Add substitutions section to handle environment variables
+substitutions:
+  _MONGODB_URI: ${_MONGODB_URI}
+
+# Access the Secret Manager secret
+availableSecrets:
+  secretManager:
+    - versionName: projects/${PROJECT_ID}/secrets/mongodb-uri/versions/latest
+      env: '_MONGODB_URI' 
